@@ -1,16 +1,23 @@
-import About from "./About";
-import Education from "./Education";
+import About from "./about/About";
+import Education from "./education/Education";
+import Footer from "./footer/Footer";
+import Home from './home/Home'
+import Navbar from "./navbar/NavBar";
+import Projects from "./Projects";
+
 
 
 const Main = () => {
+
+
     return (
         <main>
-            <header>
-            <h1>I'm Jose Izquierdo</h1>
-            <p>a Future Web Developer</p>
-            </header>
-            <About />
+            <Navbar />
+            <Home text={['Front-End Developer', 'Aspiring Full-Stack Engineer']} speed={50} delay={3000}  />
             <Education />
+            <Projects />
+            <About />
+            <Footer />
         </main>
         
     )
