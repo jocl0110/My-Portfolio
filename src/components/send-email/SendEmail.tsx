@@ -1,8 +1,7 @@
-import { Resend } from "resend";
-import { useId, useRef, useState } from "react";
+import "./styles.css";
+import emaijs from "emailjs-com";
+import { useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-//   Email JS Implementation
 
 function SendEmail() {
   const navigate = useNavigate();
@@ -13,18 +12,47 @@ function SendEmail() {
     fullName: "",
     emailAddress: "",
     Subject: "",
-    message: ""
-
+    message: "",
   });
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-
+  //   Email JS Implementation
 
   const id = useId();
   // Functions
   function handleSubmit(event) {
     event.preventDefault();
-    setIsSubmitted(true);
+    handleReset();
+    setIsLoading(true);
+    emaijs
+      .send(
+        "service_08ar3wf",
+        "template_xgil5yc",
+        {
+          from_name: formData.fullName,
+          from_email: formData.emailAddress,
+          subject: formData.Subject,
+          message: formData.message,
+        },
+        "PlEZARK5lBrOiVsIw"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          setTimeout(() => {
+            setIsLoading(false);
+            setIsSubmitted(true);
+            setTimeout(() => {
+              setIsSubmitted(false);
+            }, 4000);
+          }, 3000);
+        },
+        (error) => {
+          console.error(error.text);
+          setIsLoading(false);
+        }
+      );
   }
   function handleChange(event) {
     const { value, name } = event.target;
@@ -78,9 +106,24 @@ function SendEmail() {
         id={id + "message"}
         name="message"
       />
-      <button type="button" onClick={handleClick}>Home</button>
-      <button type="button" onClick={handleReset}>Reset</button>
+      <button type="button" onClick={handleClick}>
+        Home
+      </button>
+      <button type="button" onClick={handleReset}>
+        Reset
+      </button>
       <button>Send</button>
+      {isLoading && (
+        <div className="sk-chase">
+          <div className="sk-chase-dot"></div>
+          <div className="sk-chase-dot"></div>
+          <div className="sk-chase-dot"></div>
+          <div className="sk-chase-dot"></div>
+          <div className="sk-chase-dot"></div>
+          <div className="sk-chase-dot"></div>
+        </div>
+      )}
+      {isSubmitted && <p>Email Sent</p>}
     </form>
   );
 }
