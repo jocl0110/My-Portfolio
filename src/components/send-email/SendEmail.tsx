@@ -1,5 +1,5 @@
 import "./styles.css";
-import emaijs from "emailjs-com";
+import emailjs from "emailjs-com";
 import { useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -25,15 +25,17 @@ function SendEmail() {
     event.preventDefault();
     handleReset();
     setIsLoading(true);
-    emaijs
+    emailjs
       .send(
         "service_08ar3wf",
         "template_xgil5yc",
         {
+          to_name: "Jose",
           from_name: formData.fullName,
           from_email: formData.emailAddress,
           subject: formData.Subject,
           message: formData.message,
+          reply_to: formData.emailAddress,
         },
         "PlEZARK5lBrOiVsIw"
       )
